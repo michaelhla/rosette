@@ -1,3 +1,18 @@
+## TODO
+need to figure out how to use usernames to link people to their posts 
+not sure why sqlite not working when file is copy pasted into different directory, may have something to do with creation of file and path
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
