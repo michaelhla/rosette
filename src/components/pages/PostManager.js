@@ -41,11 +41,12 @@ class PostsManager extends Component {
     loading: true,
     posts: [],
     error: null,
+    author: null
   };
 
   componentDidMount() {
-    this.getPosts();
-    this.getUser(); 
+    this.getUserPosts(); 
+    this.setState({loading: false})
   }
 
   async fetch(method, endpoint, body) {
@@ -68,7 +69,7 @@ class PostsManager extends Component {
   }
 
   async getPosts() {
-    this.setState({ loading: false, posts: (await this.fetch('get', '/posts')) || [] });
+    this.setState({ loading: false, posts: (await this.fetch('get', `/authors/${this.state.author}`)) || [] });
   }
 
   savePost = async (post) => {
@@ -89,11 +90,11 @@ class PostsManager extends Component {
     }
   }
 
-  async getUser() { 
+  async getUserPosts() { 
     const token = {token: Cookies.get('token')}
     if(token.token===undefined){
-      this.setState({loading:false})
-        return
+        this.setState({error: 'no user found'})
+        return 404 
     }
         try {
            await fetch(`${API}/getUser`, {
@@ -107,12 +108,14 @@ class PostsManager extends Component {
           }).then(res=>res.json())
           .then(data => {
             console.log(data.author)
-            return data.author
+            this.setState({author: data.author}) 
           })
         } catch (error) {
           console.error(error);
           this.setState({ error });
         }
+        this.setState({posts: await this.fetch('get', `/authors/${this.state.author}`)})
+        return
       }
 
 

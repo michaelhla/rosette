@@ -189,6 +189,7 @@ class TextEditor extends React.Component {
         editorState: createEditorState(), 
         post : [],
         error: null, 
+        author: null
     };
 
     this.sideButtons = [{ 
@@ -257,7 +258,7 @@ class TextEditor extends React.Component {
     currentState.blocks.forEach((block) => rawText = rawText + block.text + " ")
     console.log("rawText", rawText)
     post.text = rawText
-    post.author = this.getUser()
+    post.author = this.state.author
     console.log('blocks', post.body)
     if (post.id) {
         await this.fetch('put', `${post.id}`, post);
@@ -270,8 +271,7 @@ class TextEditor extends React.Component {
  async getUser() { 
     const token = {token: Cookies.get('token')}
     if(token.token===undefined){
-      this.setState({loading:false})
-        return
+        return 404
     }
         try {
            await fetch(`${API}/getUser`, {
@@ -284,18 +284,20 @@ class TextEditor extends React.Component {
             },
           }).then(res=>res.json())
           .then(data => {
-            var strdata = JSON.stringify(data)
-            return strdata.author
+            this.setState({author: data.author})
+            console.log(this.state.author)
           })
         } catch (error) {
           console.error(error);
           this.setState({ error });
         }
+        return
       }
 
 
   async componentDidMount() {
     this.refsEditor.current.focus();
+    this.getUser()
     this.setState({ post: (await this.fetch('get',this.props.match.params.id))})
     if(this.state.post !== []){ 
       this.setState({editorState: createEditorState(JSON.parse(this.state.post.body)), loading: false})

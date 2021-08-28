@@ -87,7 +87,7 @@ const Post = database.define('posts', {
   text: Sequelize.TEXT, 
   fileList: Sequelize.TEXT, 
   cloudIDlist: Sequelize.TEXT,
-  author: Sequelize.INTEGER 
+  author: Sequelize.STRING 
   //topic: Sequelize.STRING,
 });
 
@@ -111,6 +111,10 @@ email: {
     validate: {
         isEmail: true
     }
+},
+username: {
+  type: Sequelize.STRING,
+  allowNull: false
 },
 password: {
     type: Sequelize.STRING,
@@ -158,7 +162,7 @@ app.post('/getUser', async (req, res) => {
     if(isAuth.email && isAuth.password){
       var holder = await User.findOne({where: {email : isAuth.email, password : isAuth.password }})
       if(holder.length !== null){ 
-        res.json({author: isAuth.id})
+        res.json({author: isAuth.username})
         console.log('found user')
         return;
       }
