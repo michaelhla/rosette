@@ -1,3 +1,17 @@
+## TODO
+need to figure out how to use usernames to link people to their posts 
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
