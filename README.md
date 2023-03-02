@@ -1,4 +1,4 @@
-A website for open courseware built on react and express.js
+A website for open courseware and scientific findings built on react and express.js
 
 
 ## TODO
